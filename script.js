@@ -4,10 +4,10 @@ let currentPlayer = "";
 let board = ["", "", "", "", "", "", "", "", ""];
 let gameActive = true;
 
-// DOM Elements
+// DOM elements
 const submitBtn = document.getElementById("submit");
-const player1Input = document.getElementById("player-1");
-const player2Input = document.getElementById("player-2");
+const player1Input = document.getElementById("player1");
+const player2Input = document.getElementById("player2");
 const playerInputsDiv = document.querySelector(".player-inputs");
 const gameBoardDiv = document.querySelector(".game-board");
 const messageDiv = document.querySelector(".message");
@@ -35,44 +35,42 @@ submitBtn.addEventListener("click", () => {
     return;
   }
 
-  // Hide input form and show game board
+  // Hide input section and show game
   playerInputsDiv.classList.add("hidden");
   gameBoardDiv.classList.remove("hidden");
 
   currentPlayer = player1;
-  messageDiv.textContent = `${currentPlayer}, you're up!`;
+  messageDiv.textContent = `${currentPlayer}, you're up`;
 });
 
-// Handle cell click
+// Handle clicks on board cells
 cells.forEach((cell, index) => {
   cell.addEventListener("click", () => {
     if (!gameActive || board[index] !== "") return;
 
-    board[index] = currentPlayer === player1 ? "X" : "O";
+    board[index] = currentPlayer === player1 ? "x" : "o";
     cell.textContent = board[index];
 
     if (checkWinner()) {
-      messageDiv.textContent = `${currentPlayer}, congratulations you won!`;
+      messageDiv.textContent = `${currentPlayer} congratulations you won!`;
       gameActive = false;
       return;
     }
 
-    if (board.every(cell => cell !== "")) {
+    if (board.every(c => c !== "")) {
       messageDiv.textContent = "It's a draw!";
       gameActive = false;
       return;
     }
 
-    // Switch turn
     currentPlayer = currentPlayer === player1 ? player2 : player1;
-    messageDiv.textContent = `${currentPlayer}, you're up!`;
+    messageDiv.textContent = `${currentPlayer}, you're up`;
   });
 });
 
-// Check for winner
 function checkWinner() {
-  return winningCombinations.some(combination => {
-    const [a, b, c] = combination;
+  return winningCombinations.some(combo => {
+    const [a, b, c] = combo;
     return (
       board[a] !== "" &&
       board[a] === board[b] &&
